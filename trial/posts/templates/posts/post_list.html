@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Post List</title>
-</head>
-<body>
-    <h1>Post List</h1>
-</body>
-</html>
+{% extends 'layout.html' %}
+
+{% block title %}Posts{% endblock %}
+
+{% block content %}
+    <h1>Posts</h1>
+    <p>This is the list of posts.</p>
+{% endblock %}
