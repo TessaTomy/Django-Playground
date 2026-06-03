@@ -9,7 +9,7 @@
     <h1>State List</h1>
     <ul>
         {% for state in states %}
-            <li>{{ state.name }}</li>
+            <li>{{ state.name }} <button> <a href="{% url 'update_state' state.pk %}">Edit</a> </button> </li>    
         {% endfor %}
 
         <li><a href="{% url 'add_state' %}">Add New State</a></li>
