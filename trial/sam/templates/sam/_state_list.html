@@ -1,0 +1,14 @@
+<ul id="stateList">
+    {% for state in states %}
+        <li>
+            {{ state.name }}
+            <a href="{% url 'update_state' state.pk %}">Edit</a>
+            <form method="post" action="{% url 'state_delete' state.pk %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" onclick="return confirm('Delete {{ state.name }}?');">Delete</button>
+            </form>
+        </li>
+    {% empty %}
+        <li>No states found.</li>
+    {% endfor %}
+</ul>

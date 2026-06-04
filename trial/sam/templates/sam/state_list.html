@@ -7,13 +7,27 @@
 </head>
 <body>
     <h1>State List</h1>
-    <ul>
-        {% for state in states %}
-            <li>{{ state.name }} <button> <a href="{% url 'update_state' state.pk %}">Edit</a> </button> </li>    
-        {% endfor %}
 
-        <li><a href="{% url 'add_state' %}">Add New State</a></li>
-        
-    </ul>
+    <!-- Search input -->
+    <input type="text" id="searchBox" placeholder="Search states...">
+
+    <!-- Initial list -->
+    {% include "sam/_state_list.html" %}
+
+    <a href="{% url 'add_state' %}">Add New State</a>
+
+    <script>
+    document.getElementById('searchBox').addEventListener('keyup', function() {
+        let query = this.value;
+
+        fetch(`/sam/state_list/?q=${query}`, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('stateList').outerHTML = html;
+        });
+    });
+    </script>
 </body>
 </html>

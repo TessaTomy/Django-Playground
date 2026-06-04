@@ -18,8 +18,19 @@ def add_state(request):
     return render(request, 'sam/add_state.html', {'form': form})
 
 def state_list(request):
-    states = State.objects.all()
+    query = request.GET.get('q')
+    if query:
+        states = State.objects.filter(name__icontains=query)
+    else:
+        states = State.objects.all()
+
+    # If AJAX request, return only the list
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return render(request, 'sam/_state_list.html', {'states': states})
+
+    # Otherwise return full page
     return render(request, 'sam/state_list.html', {'states': states})
+
 
 def update_state(request, pk):
     state=get_object_or_404(State, pk=pk)
@@ -31,3 +42,8 @@ def update_state(request, pk):
     else:
         form = StateForm(instance=state)
     return render(request, 'sam/update_state.html', {'form': form})
+
+def state_delete(request, pk):
+    state = get_object_or_404(State, pk=pk)
+    state.delete()
+    return redirect('state_list')
