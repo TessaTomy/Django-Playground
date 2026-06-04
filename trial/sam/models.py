@@ -21,7 +21,16 @@ class Student(models.Model):
     state = models.ForeignKey(State, on_delete=models.CASCADE)
     age= models.IntegerField()
     gender = models.CharField(max_length=10, choices=(('Male', 'Male'), ('Female', 'Female')))
-    course = models.CharField(max_length=25)
+    course = models.CharField(
+    max_length=25,
+    choices=(
+        ('CS', 'Computer Science'),
+        ('Math', 'Mathematics'),
+        ('Physics', 'Physics'),
+        ('Chem', 'Chemistry'),
+    )
+)
+
     photo= models.ImageField(upload_to='uploads/')
     def __str__(self):
         return self.name

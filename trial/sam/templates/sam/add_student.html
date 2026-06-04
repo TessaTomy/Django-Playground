@@ -1,0 +1,86 @@
+{% extends "sam/sam.html" %}
+
+{% block title %}Add Student{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Add Student</h4>
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            {% csrf_token %}
+
+            <div class="mb-3">
+                {{ form.name.label_tag }}
+                {{ form.name }}
+                <div class="invalid-feedback">Please enter a name.</div>
+            </div>
+
+            <div class="mb-3">
+                {{ form.state.label_tag }}
+                {{ form.state }}
+                <div class="invalid-feedback">Please enter a state.</div>
+            </div>
+
+            <div class="mb-3">
+                {{ form.district.label_tag }}
+                {{ form.district }}
+                <div class="invalid-feedback">Please enter a district.</div>
+   
+            </div>
+
+            <div class="mb-3">
+                {{ form.age.label_tag }}
+                {{ form.age }}
+                <div class="invalid-feedback">Please enter your age.</div>
+   
+            </div>
+
+            <div class="mb-3">
+                {{ form.gender.label_tag }}
+                {{ form.gender }}
+                <div class="invalid-feedback">Please select your gender.</div>
+   
+            </div>
+
+            <div class="mb-3">
+                {{ form.course.label_tag }}
+                {{ form.course }}
+                <div class="invalid-feedback">Please select your course.</div>
+   
+            </div>
+
+            <div class="mb-3">
+                {{ form.photo.label_tag }}
+                {{ form.photo }}
+                <div class="invalid-feedback">Please enter a pic.</div>
+   
+            </div>
+
+            <button type="submit" class="btn btn-success">Add Student</button>
+            <a href="{% url 'student_list' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+
+<script>
+document.getElementById('id_state').addEventListener('change', function() {
+    let stateId = this.value;
+    fetch(`/sam/get-districts/${stateId}/`)
+    .then(response => response.json())
+    .then(data => {
+        let districtSelect = document.getElementById('id_district');
+        districtSelect.innerHTML = '';
+        data.forEach(d => {
+            let option = document.createElement('option');
+            option.value = d.id;
+            option.textContent = d.name;
+            districtSelect.appendChild(option);
+        });
+    });
+});
+</script>
+
+
+{% endblock %}

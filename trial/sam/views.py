@@ -2,8 +2,13 @@ from urllib import request
 from django.shortcuts import get_object_or_404, redirect, render
 from .forms import StudentForm, DistrictForm, StateForm
 from .models import State, District, Student
+from django.http import JsonResponse
 
 # Create your views here.
+def get_districts(request, state_id):
+    districts = District.objects.filter(state_id=state_id).values('id', 'name')
+    return JsonResponse(list(districts), safe=False)
+
 def sam(request):
     return render(request, 'sam/sam.html')
 
@@ -61,4 +66,23 @@ def add_district(request):
     else:
         form = DistrictForm()
     return render(request, 'sam/add_district.html', {'form': form})
+
+def add_student(request):
+    if request.method == 'POST':
+        form = StudentForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('student_list')
+    else:
+        form = StudentForm()
+    return render(request, 'sam/add_student.html', {'form': form})
+
+
+def student_list(request):
+    q = request.GET.get('q')
+    if q:
+        students = Student.objects.filter(name__icontains=q)
+    else:
+        students = Student.objects.all()
+    return render(request, 'sam/student_list.html', {'students': students})
 

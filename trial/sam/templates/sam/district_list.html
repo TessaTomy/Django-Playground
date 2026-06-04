@@ -13,12 +13,7 @@
                 {{ district.name }} <span class="text-muted">({{ district.state.name }})</span>
             </span>
             <span>
-                <a href="{% url 'update_district' district.pk %}" class="btn btn-sm btn-warning">Edit</a>
-                <a href="{% url 'delete_district' district.pk %}" 
-                   class="btn btn-sm btn-danger"
-                   onclick="return confirm('Delete {{ district.name }}?');">
-                   Delete
-                </a>
+               
             </span>
         </li>
     {% empty %}
