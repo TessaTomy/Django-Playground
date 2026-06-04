@@ -25,3 +25,4 @@ class Student(models.Model):
     photo= models.ImageField(upload_to='uploads/')
     def __str__(self):
         return self.name
+

@@ -1,0 +1,28 @@
+{% extends "sam/sam.html" %}
+
+{% block title %}Districts{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Districts</h1>
+<a href="{% url 'add_district' %}" class="btn btn-primary mb-3">Add District</a>
+
+<ul class="list-group">
+    {% for district in districts %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>
+                {{ district.name }} <span class="text-muted">({{ district.state.name }})</span>
+            </span>
+            <span>
+                <a href="{% url 'update_district' district.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                <a href="{% url 'delete_district' district.pk %}" 
+                   class="btn btn-sm btn-danger"
+                   onclick="return confirm('Delete {{ district.name }}?');">
+                   Delete
+                </a>
+            </span>
+        </li>
+    {% empty %}
+        <li class="list-group-item">No districts found.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

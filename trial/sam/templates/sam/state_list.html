@@ -1,33 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>State List</title>
-</head>
-<body>
-    <h1>State List</h1>
+{% extends "sam/sam.html" %}
 
-    <!-- Search input -->
-    <input type="text" id="searchBox" placeholder="Search states...">
+{% block title %}State List{% endblock %}
 
-    <!-- Initial list -->
+{% block content %}
+<h1 class="mb-4">State List</h1>
+
+<!-- Search input -->
+<div class="mb-3">
+    <input type="text" id="searchBox" class="form-control" placeholder="Search states...">
+</div>
+
+<!-- Initial list -->
+<div id="stateList">
     {% include "sam/_state_list.html" %}
+</div>
 
-    <a href="{% url 'add_state' %}">Add New State</a>
+<a href="{% url 'add_state' %}" class="btn btn-primary mt-3">Add New State</a>
 
-    <script>
-    document.getElementById('searchBox').addEventListener('keyup', function() {
-        let query = this.value;
+<script>
+document.getElementById('searchBox').addEventListener('keyup', function() {
+    let query = this.value;
 
-        fetch(`/sam/state_list/?q=${query}`, {
-            headers: { 'X-Requested-With': 'XMLHttpRequest' }
-        })
-        .then(response => response.text())
-        .then(html => {
-            document.getElementById('stateList').outerHTML = html;
-        });
+    fetch(`/sam/state_list/?q=${encodeURIComponent(query)}`, {
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(response => response.text())
+    .then(html => {
+        document.getElementById('stateList').outerHTML = html;
     });
-    </script>
-</body>
-</html>
+});
+</script>
+{% endblock %}

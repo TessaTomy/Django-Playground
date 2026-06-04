@@ -1,11 +1,11 @@
 {% extends "sam/sam.html" %}
 
-{% block title %}Add State{% endblock %}
+{% block title %}Add District{% endblock %}
 
 {% block content %}
 <div class="card shadow-sm">
     <div class="card-header bg-primary text-white">
-        <h4 class="mb-0">Add State</h4>
+        <h4 class="mb-0">Add District</h4>
     </div>
     <div class="card-body">
         <form method="post" class="needs-validation" novalidate>
@@ -14,8 +14,12 @@
                 {{ form.name.label_tag }}
                 {{ form.name }}
             </div>
-            <button type="submit" class="btn btn-success">Add State</button>
-            <a href="{% url 'state_list' %}" class="btn btn-secondary">Cancel</a>
+            <div class="mb-3">
+                {{ form.state.label_tag }}
+                {{ form.state }}
+            </div>
+            <button type="submit" class="btn btn-success">Add District</button>
+            <a href="{% url 'district_list' %}" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
 </div>

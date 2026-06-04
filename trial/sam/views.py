@@ -47,3 +47,18 @@ def state_delete(request, pk):
     state = get_object_or_404(State, pk=pk)
     state.delete()
     return redirect('state_list')
+
+def list_districts(request):
+    districts = District.objects.select_related('state').all()
+    return render(request, 'sam/district_list.html', {'districts': districts})
+
+def add_district(request):
+    if request.method == 'POST':
+        form = DistrictForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('district_list')
+    else:
+        form = DistrictForm()
+    return render(request, 'sam/add_district.html', {'form': form})
+
