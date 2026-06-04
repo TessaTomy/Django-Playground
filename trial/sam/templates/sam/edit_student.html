@@ -1,0 +1,80 @@
+{% extends "sam/sam.html" %}
+
+{% block title %}Edit Student{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header bg-warning text-dark">
+        <h4 class="mb-0">Edit Student - {{ student.name }}</h4>
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            {% csrf_token %}
+
+            <div class="mb-3">
+                {{ form.name.label_tag }}
+                {{ form.name }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.state.label_tag }}
+                {{ form.state }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.district.label_tag }}
+                {{ form.district }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.age.label_tag }}
+                {{ form.age }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.gender.label_tag }}
+                {{ form.gender }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.course.label_tag }}
+                {{ form.course }}
+            </div>
+
+            <div class="mb-3">
+                    {{ form.photo.label_tag }}
+                    {% if student.photo %}
+                        <div class="mb-2">
+                            <img src="{{ student.photo.url }}" alt="{{ student.name }}"
+                                class="rounded-circle border" width="120" height="120">
+                        </div>
+                    {% endif %}
+                    <input type="file" name="photo" id="id_photo" class="form-control">
+                </div>
+
+
+            <button type="submit" class="btn btn-success">Save Changes</button>
+            <a href="{% url 'student_list' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+
+<script>
+document.getElementById('id_state').addEventListener('change', function() {
+    let stateId = this.value;
+    fetch(`/sam/get-districts/${stateId}/`)
+    .then(response => response.json())
+    .then(data => {
+        let districtSelect = document.getElementById('id_district');
+        districtSelect.innerHTML = '';
+        data.forEach(d => {
+            let option = document.createElement('option');
+            option.value = d.id;
+            option.textContent = d.name;
+            districtSelect.appendChild(option);
+        });
+    });
+});
+</script>
+
+{% endblock %}

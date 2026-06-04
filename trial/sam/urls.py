@@ -12,4 +12,5 @@ urlpatterns = [
    path('add_student/', views.add_student, name='add_student'),
    path('student_list/', views.student_list, name='student_list'),  
    path('get-districts/<int:state_id>/', views.get_districts, name='get_districts'),
+   path('students/<int:pk>/edit/', views.edit_student, name='edit_student'),
 ]

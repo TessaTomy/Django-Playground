@@ -4,6 +4,10 @@ from .forms import StudentForm, DistrictForm, StateForm
 from .models import State, District, Student
 from django.http import JsonResponse
 
+
+from django.test import TestCase
+from django.urls import reverse
+
 # Create your views here.
 def get_districts(request, state_id):
     districts = District.objects.filter(state_id=state_id).values('id', 'name')
@@ -80,9 +84,29 @@ def add_student(request):
 
 def student_list(request):
     q = request.GET.get('q')
-    if q:
-        students = Student.objects.filter(name__icontains=q)
-    else:
-        students = Student.objects.all()
+    students = Student.objects.filter(name__icontains=q) if q else Student.objects.all()
+
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return render(request, 'sam/_student_list.html', {'students': students})
     return render(request, 'sam/student_list.html', {'students': students})
 
+
+def edit_student(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+    if request.method == 'POST':
+        form = StudentForm(request.POST, request.FILES, instance=student)
+        if form.is_valid():
+            form.save()
+            return redirect('student_list')
+    else:
+        form = StudentForm(instance=student)
+    return render(request, 'sam/edit_student.html', {'form': form, 'student': student})
+
+
+
+
+class StudentViewsTest(TestCase):
+    def test_student_list_page_loads(self):
+        response = self.client.get(reverse('student_list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Student List")
